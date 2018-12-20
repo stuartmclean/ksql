@@ -58,7 +58,9 @@ import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class KsqlRestClientTest {
 
@@ -219,9 +221,16 @@ public class KsqlRestClientTest {
     }
   }
 
-  @Test(expected = KsqlRestClientException.class)
-  public void shouldThrowOnParsingMultipleServerAddresses() {
-    new KsqlRestClient("http://firstServer:8088,secondBuggyServer.8088");
+  @Rule
+  public final ExpectedException expectedException = ExpectedException.none();
+
+  @Test
+  public void shouldThrowIfAnyServerAddressIsInvalid() {
+    expectedException.expect(KsqlRestClientException.class);
+    expectedException.expectMessage("The supplied serverAddress is invalid: secondBuggyServer.8088");
+    try (KsqlRestClient client = new KsqlRestClient("http://firstServer:8088,secondBuggyServer.8088")) {
+      // Meh
+    }
   }
 
   @Test
