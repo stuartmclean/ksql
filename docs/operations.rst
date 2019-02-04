@@ -56,7 +56,7 @@ utility from your terminal:
 
 .. code:: bash
 
-    $ <path-to-confluent>/bin/ksql-print-metrics
+    $ <path-to-confluent>/bin/ksql-print-metrics [port=<jmx-port>]
 
 Your output should resemble:
 
